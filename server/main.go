@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type Todo struct {
@@ -21,6 +22,10 @@ func main() {
 	e.GET("/todo", func(ctx echo.Context) error {
 		return ctx.String(http.StatusOK, "Hello, World!")
 	})
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+	}))
 
 	e.Logger.Fatal(e.Start(":4000"))
 }
