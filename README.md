@@ -1,3 +1,3 @@
 # Tech
 
-Go with TypeScript React, MySql for database
+Go with TypeScript React
