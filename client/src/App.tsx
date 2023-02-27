@@ -14,9 +14,9 @@ function App() {
 
   const getTodo = async () => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/todo`);
-      setTodoList(data);
+      const data = await axios.get(`${BASE_URL}/api/todo`);
       console.log(todoList, "todolist");
+      setTodoList(data);
     } catch (error) {
       console.log(error);
     }
@@ -25,6 +25,7 @@ function App() {
   useEffect(() => {
     getTodo();
   }, []);
+
   return <h1>hello world!</h1>;
 }
 
