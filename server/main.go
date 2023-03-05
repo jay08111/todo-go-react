@@ -66,7 +66,7 @@ func main() {
 
 		for idx, v := range todoList {
 			if v.Id == id {
-				todoList[idx].Done = true
+				todoList[idx].Done = !todoList[idx].Done
 			}
 		}
 
@@ -86,6 +86,11 @@ func main() {
 			}
 		}
 
+		return c.JSON(http.StatusOK, todoList)
+	})
+
+	e.DELETE("/api/todo", func(c echo.Context) error {
+		todoList = nil
 		return c.JSON(http.StatusOK, todoList)
 	})
 
