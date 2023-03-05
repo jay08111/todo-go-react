@@ -17,5 +17,7 @@
 
 .todo-main {
   background-color: var(--white);
-  min-height: 400px;
+  min-height: 800px;
+  width: 450px;
+  padding: 1rem 2rem;
 }

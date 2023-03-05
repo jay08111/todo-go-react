@@ -1,26 +1,31 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 type TodoList = {
-  name: string;
   id: number;
-  isDone: boolean;
+  done: boolean;
+  title: string;
+  body: string;
 };
 
 function App() {
-  const [todoList, setTodoList] = useState<
-    TodoList[] | AxiosResponse<TodoList[]>
-  >([]);
+  const [todoList, setTodoList] = useState<TodoList[] | []>([]);
 
   const BASE_URL = "http://localhost:4000";
 
+  const showAlert = (err: Error) => {
+    alert(err);
+  };
+
   const onLoadGetTodo = async () => {
     try {
-      const data = await axios.get(`${BASE_URL}/api/todo`);
-      console.log(todoList, "todolist");
+      const { data } = await axios.get<TodoList[]>(`${BASE_URL}/api/todo`);
       setTodoList(data);
+      console.log(data, "data");
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        showAlert(error);
+      }
     }
   };
 
@@ -31,21 +36,35 @@ function App() {
         console.log(res, "res");
       });
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        showAlert(error);
+      }
     }
   };
 
   const onClickCheckTodoDone = async (id: number) => {
-    await axios.post(`${BASE_URL}/api/todo/${id}/done`);
+    try {
+      await axios.post(`${BASE_URL}/api/todo/${id}/done`);
+    } catch (error) {
+      if (error instanceof Error) {
+        showAlert(error);
+      }
+    }
   };
 
   const onClickDeleteTodo = async (id: number) => {
-    await axios.delete(`${BASE_URL}/api/todo/${id}`);
+    try {
+      await axios.delete(`${BASE_URL}/api/todo/${id}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        showAlert(error);
+      }
+    }
   };
 
   const displayTodos = () => {
-    todoList.map((el: TodoList) => {
-      // return <article key={el.id}>{el}</article>;
+    return todoList.map((el: TodoList) => {
+      return <article key={el.id}>{el.body} </article>;
     });
   };
 
@@ -60,9 +79,8 @@ function App() {
           <div>1</div>
           <div>2</div>
         </section>
-        <section>{todoList}</section>
+        <section>{displayTodos()}</section>
       </main>
-      <footer></footer>
     </div>
   );
 }
