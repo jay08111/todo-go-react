@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
+import { BsCircle, BsTrash, BsCircleFill } from "react-icons/bs";
 
 type TodoList = {
   id: number;
@@ -54,9 +55,12 @@ function App() {
       const server_query = {
         title,
       };
+
       await axios.post(`${BASE_URL}/api/todo`, server_query);
+
       setTitle("");
       setShowInput(false);
+
       onLoadGetTodo();
     } catch (error) {
       if (error instanceof Error) {
@@ -68,6 +72,7 @@ function App() {
   const onClickCheckTodoDone = async (id: number) => {
     try {
       await axios.post(`${BASE_URL}/api/todo/${id}/done`);
+      onLoadGetTodo();
     } catch (error) {
       if (error instanceof Error) {
         showAlert(error);
@@ -78,6 +83,7 @@ function App() {
   const onClickDeleteTodo = async (id: number) => {
     try {
       await axios.delete(`${BASE_URL}/api/todo/${id}`);
+      onLoadGetTodo();
     } catch (error) {
       if (error instanceof Error) {
         showAlert(error);
@@ -88,6 +94,7 @@ function App() {
   const onClickDeleteAllTodo = async () => {
     try {
       await axios.delete(`${BASE_URL}/api/todo`);
+      onLoadGetTodo();
     } catch (error) {
       if (error instanceof Error) {
         showAlert(error);
@@ -98,8 +105,26 @@ function App() {
   const displayTodos = () => {
     return todoList.map((el: TodoList) => {
       return (
-        <article key={el.id}>
-          <span onClick={() => onClickCheckTodoDone(el.id)}>{el.title}</span>
+        <article
+          key={el.id}
+          className="flex flex-row justify-between items-center text-gray todo-item"
+        >
+          <div className="flex items-center gap-2">
+            <BsCircle />
+            <span
+              onClick={() => onClickCheckTodoDone(el.id)}
+              className={`cursor-pointer ${el.done ? "todo-name" : ""}`}
+            >
+              {el.title}
+            </span>
+          </div>
+
+          {el.done && (
+            <BsTrash
+              className="text-xl"
+              onClick={() => onClickDeleteTodo(el.id)}
+            />
+          )}
         </article>
       );
     });
@@ -114,10 +139,10 @@ function App() {
   }, []);
 
   return (
-    <div className="todo-body">
+    <div className="todo-body flex-col">
+      <div className="mb-4 todo-header text-center p-4">Todo List</div>
       <main className="todo-main relative">
-        <section className="flex justify-between">Todo List</section>
-        <section>{displayTodos()}</section>
+        <section className="flex flex-col gap-2">{displayTodos()}</section>
         {showInput && (
           <div className="flex mt-3 gap-2">
             <input
@@ -141,7 +166,7 @@ function App() {
             className="absolute todo-add-btn"
             onClick={onClickToggleAddInput}
           >
-            +
+            + New Task
           </button>
         </div>
       </main>
