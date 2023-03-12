@@ -9,6 +9,7 @@
   --dark-green: #4ac28b;
   --main-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   --radious-min: 5px;
+  --radious-large: 20px;
   --gray: rgb(172, 182, 192);
 }
 
@@ -48,30 +49,37 @@ body {
   font-size: 18px;
   background-color: var(--purple);
   width: 150px;
-  border-radius: 20px;
+  border-radius: var(--radious-large);
   box-shadow: var(--main-shadow);
   padding: 10px;
   color: var(--white);
   font-weight: 500;
 }
 
+.todo-add-input,
+.todo-add-input:focus,
+.todo-add-input:active {
+  border: 1px solid var(--purple);
+}
+
 .todo-add-input {
-  border: 1px solid #000;
   width: 80%;
   height: 40px;
   border-radius: var(--radious-min);
+  padding: 0 10px;
 }
 
 .todo-add-button {
   height: 40px;
   border-radius: var(--radious-min);
+  color: var(--white);
   font-size: 20px;
-  transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
   background-color: var(--purple);
 }
 
-.todo-add-button:hover {
-  background-color: var(--dark-green);
+.todo-done {
+  color: var(--purple) !important;
+  fill: var(--purple) !important;
 }
 
 .todo-item {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { BsCircle, BsTrash, BsCircleFill } from "react-icons/bs";
 
 type TodoList = {
@@ -110,7 +110,10 @@ function App() {
           className="flex flex-row justify-between items-center text-gray todo-item"
         >
           <div className="flex items-center gap-2">
-            <BsCircle />
+            <div onClick={() => onClickCheckTodoDone(el.id)}>
+              {el.done ? <BsCircleFill /> : <BsCircle className="todo-done" />}
+            </div>
+
             <span
               onClick={() => onClickCheckTodoDone(el.id)}
               className={`cursor-pointer ${el.done ? "todo-name" : ""}`}
@@ -157,7 +160,7 @@ function App() {
               onClick={onClickMakeTodo}
               className="flex justify-center items-center	todo-add-button w-1/5"
             >
-              <AiOutlineCheck />
+              <AiOutlinePlus />
             </button>
           </div>
         )}
